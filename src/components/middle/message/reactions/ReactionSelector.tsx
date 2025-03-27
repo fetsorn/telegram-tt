@@ -119,7 +119,9 @@ const ReactionSelector: FC<OwnProps> = ({
 
     const sortedReactions = sortReactions(filteredReactions, topReactions);
     if (isWithPaidReaction) {
-      sortedReactions.unshift({ type: 'paid' });
+      const reactionPaid = { type: 'paid' } as ApiReactionPaid;
+      const reactionsWithPaid = ([reactionPaid] as RenderableReactions).concat(sortedReactions);
+      return reactionsWithPaid;
     }
     return sortedReactions;
   }, [

@@ -81,7 +81,9 @@ const ReactionPickerLimited: FC<OwnProps & StateProps> = ({
     if (shouldUseCurrentReactions) {
       const reactions = currentReactions.map(({ reaction }) => reaction);
       if (isWithPaidReaction) {
-        reactions.unshift({ type: 'paid' });
+        const reactionPaid = { type: 'paid' } as ApiReactionWithPaid;
+        const reactionsWithPaid = [reactionPaid].concat(reactions);
+        return reactionsWithPaid;
       }
       return reactions;
     }
@@ -93,14 +95,18 @@ const ReactionPickerLimited: FC<OwnProps & StateProps> = ({
     if (enabledReactions.type === 'all') {
       const reactionsToSort: ApiReactionWithPaid[] = (availableReactions || []).map(({ reaction }) => reaction);
       if (isWithPaidReaction) {
-        reactionsToSort.unshift({ type: 'paid' });
+        const reactionPaid = { type: 'paid' } as ApiReactionWithPaid;
+        const reactionsWithPaid = [reactionPaid].concat(reactionsToSort);
+        return sortReactions(reactionsWithPaid, topReactions);
       }
       return sortReactions(reactionsToSort, topReactions);
     }
 
     const reactionsToSort: ApiReactionWithPaid[] = enabledReactions.allowed;
     if (isWithPaidReaction) {
-      reactionsToSort.unshift({ type: 'paid' });
+      const reactionPaid = { type: 'paid' } as ApiReactionWithPaid;
+      const reactionsWithPaid = [reactionPaid].concat(reactionsToSort);
+      return sortReactions(reactionsWithPaid, topReactions);
     }
 
     return sortReactions(reactionsToSort, topReactions);
